@@ -75,7 +75,7 @@ for i in finditer(regex, target):
 ## that end at the end of the line with a word
 
 regex = compile(r'^\d.*\w$')
-target = r"12Humbert Humbert the Humbert big the the big bug\nHumbert Humbert the Humbert big the the big bug"
+target = r"12Humbert Humbert the Humbert big the the big bug\nHumbert Humbert the Humbert big the the big bug\nHumber humbert is"
 
 for i in finditer(regex, target):
     print(i)
@@ -85,9 +85,11 @@ for i in finditer(regex, target):
 ## all strings that have both the word 'grotto' and the word 'raven' in them but 
 ## not words like 'grottos' that merely contain the word 'grotto'.
 
-# regex = compile(r'(\bgrotto\b)|(\braven\b)')
-target = r"Humbert had a grotto and a raven in Germany\nHumbert likes grottos\nHumbert likes that raven."
+regex =  compile(r'(\bgrotto\b.*\braven\b)|(\braven\b.*\bgrotto\b)')
+target = r"Humbert had a grotto and a raven in Germany\nHumbert likes grottos\nHumbert likes that raven"
 
 for i in finditer(regex, target):
     print(i)
+
+# # <re.Match object; span=(14, 92), match='grotto and a raven in Germany\\nHumbert likes gro>
 
