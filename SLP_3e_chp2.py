@@ -9,8 +9,8 @@ freely available draft dated December 2020
 __author__ = 'Vaibhav Mittal'
 __date__ = '2021/07/03'
 
-import re
 from re import finditer, compile
+import numpy as np
 # # from https://regexone.com/references/python
 
 ## RegEx to find the set of all alphabetic strings
@@ -93,3 +93,41 @@ for i in finditer(regex, target):
 
 # # <re.Match object; span=(14, 92), match='grotto and a raven in Germany\\nHumbert likes gro>
 
+
+### Minimum Edit Distance
+
+
+def min_edit_distance(source, target, del_cost = 1, ins_cost = 1, sub_cost = 2):
+    """
+    A function which takes a source and target (string) and returns the minimum edit distance (integer)
+    """
+	
+    n = len(source)
+	m = len(target)
+    D = np.zeros((n+1, m+1))
+	for i in range(1, n+1):
+		D[i, 0] = D[i-1, 0] + del_cost
+	for j in range(1, m+1):
+		D[0, j] = D[0, j-1] + ins_cost
+	
+	for i in range(1, n+1):
+		for j in range(1, m+1):
+			deletion = D[i-1, j] + del_cost
+			insertion = D[i, j-1] + ins_cost
+			substitution = D[i-1, j-1] + calculate_sub_cost(source[i], target[j], sub_cost)
+			D[i, j] = min(deletion, insertion, substitution)
+	
+	return D[n, m]
+
+def calculate_sub_cost(source, target, sub_cost = 2):
+    """
+	A function to calculate substitution costs taking the substitution or non-substitution into account
+	"""
+	
+	if source == target:
+		return 0
+	else:
+		return sub_cost
+
+med = min_edit_distance("intention", "execution", del_cost = 1, ins_cost = 1, sub_cost = 2)
+print(med)
