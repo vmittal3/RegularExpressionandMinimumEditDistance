@@ -115,6 +115,13 @@ def min_edit_distance(source, target, del_cost = 1, ins_cost = 1, sub_cost = 2):
             insertion = D[i, j-1] + ins_cost
             substitution = D[i-1, j-1] + calculate_sub_cost(source[i-1], target[j-1], sub_cost)
             D[i, j] = min(deletion, insertion, substitution)
+            backtrace = []
+            if substitution == D[i,j]:
+                backtrace.append('diagonal')
+            if insertion == D[i,j]:
+                backtrace.append('up')
+            if deletion == D[i,j]:
+                backtrace.append('left')
     return D[n, m]
 
 def calculate_sub_cost(source, target, sub_cost = 2):
